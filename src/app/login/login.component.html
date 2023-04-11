@@ -1,0 +1,31 @@
+<div class="container d-flex vh-100 justify-content-center">
+    <div class="col-8 col-sm-6 col-lg-4 my-auto">
+        <div class="card shadow-2-strong card-login" style="border-radius: 15px">
+            <div class="card-body p-4">
+                <h4 class="pb-md-2 text-center">Login</h4>
+                <form [formGroup]= "myLoginForm" (ngSubmit)= "submit()">
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="userName">Username</label>
+                        <input type="text" id="userName" class="form-control" formControlName="userName">
+                        <small *ngIf ="!myLoginForm.get('userName').valid && myLoginForm.get('userName').touched" class="form-text text-danger">
+                            <span *ngIf= "myLoginForm.get('userName')?.errors?.['required']" >Username is required!</span>
+                        </small>
+                    </div>      
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="form-control" formControlName="password">
+                        <small *ngIf ="!myLoginForm.get('password').valid && myLoginForm.get('password').touched" class="form-text text-danger">
+                            <span *ngIf= "myLoginForm.get('password')?.errors?.['required']" >Password required!</span>
+                        </small>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-block mb-2" [disabled]="!myLoginForm.valid">Sign in</button>
+                    </div>
+                    <div class="text-center">
+                        <p class="form-check-inline">Not registered!</p><a href='' routerLink="/register">Register</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

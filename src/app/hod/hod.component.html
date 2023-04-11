@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-md navbar-light bg-primary py-0 mb-0">
+    <!-- <h6 class="pb-1">Hod LoggedIn, <small class="text-warning mb-0">Welcome {{loggedInHod.fName}}  {{loggedInHod.lName}} ({{loggedInHod.dept}})</small></h6> -->
+    <h6>Hod</h6>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <button class="btn btn-sm text-warning ms-auto" (click)="logOut()"><small>LogOut</small></button>
+    </div>
+</nav>
+<div class="container mt-5">
+    <h6 class="pb-1"><small>Hod LoggedIn, </small><small class="text-warning mb-0">Welcome {{loggedInHod.fName}}  {{loggedInHod.lName}} ({{loggedInHod.dept}})</small></h6>
+    <div *ngIf="leavesList.length=== 0" class="container d-flex vh-100 justify-content-center">
+        <div class="my-auto text-center">
+            <h6>No leaves applied by Staff</h6>
+            <div class="mt-4 text-center mb-2">
+                <button type="button" class="btn btn-primary border border-dark px-4" routerLink="/login">Log Out</button>
+            </div>
+        </div>
+    </div>
+    <div class="row my-2" *ngIf="leavesList.length>0">
+        <h6 class="text-primary mb-0"><small>Leave Requests </small><span class="badge bg-warning text-primary">{{leavesList.length}}</span></h6>
+        <div class="col-sm-6 col-md-4" *ngFor="let leave of leavesList">
+            <div class="card my-4">
+                <div class="card-body leaveReq">
+                    <h6 class="card-title text-primary"><small>Staff Name: {{leave.stafffName}}  {{leave.stafflName}}</small></h6>
+                    <h6 class="card-text mb-0"><small>Leaves:</small></h6>
+                    <p class="card-text text-primary mb-0">From: {{leave.startDate}} To: {{leave.endDate}}</p>
+                    <p class="card-text text-secondary"><small>No. of days: </small></p>
+                    <h6 class="card-subtitle"><small>Reason:</small></h6>
+                    <p class="card-text">{{leave.reason}}</p>
+                    <div *ngIf="leave.leaveStatus=== 'Pending'" class="row text-center">
+                        <div class="col-12 col-lg-6 px-sm-1 px-md-2">
+                            <button type="button" class="apprBtn btn btn-success border border-2 border-dark mb-2 mb-lg-0 px-3" (click)="approveBtn(leave)">Approve</button>
+                        </div>
+                        
+                        <div class="col-12 col-lg-6 px-sm-1 px-md-2">
+                            <button type="button" class="btn btn-danger border border-2 border-dark px-4" (click)="rejBtn(leave)">Reject</button>
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="leave.leaveStatus=== 'Approved'">
+                        <div class="col-12 col-lg-8 px-sm-1 px-md-2 mt-sm-4 mb-sm-5 mt-lg-2 mb-lg-2">
+                            <h6 class="text-success font-weight-bold border border-secondary border-light py-1">&check; Approved</h6>
+                        </div>
+                    </div>
+                    <div *ngIf="leave.leaveStatus=== 'Rejected'">
+                        <div class="col-12 col-lg-8 px-sm-1 px-md-2 mt-sm-4 mb-sm-5 mt-lg-2 mb-lg-2">
+                            <h6 class="text-danger font-weight-bold border border-secondary border-light py-1">&#10005; Rejected</h6>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        <div class="mt-2 text-center">
+            <button type="button" class="btn btn-primary border border-2 border-dark px-4" (click)="logOut()">Log Out</button>
+        </div>
+    </div>
+  
+</div>

@@ -1,0 +1,124 @@
+<nav class="navbar navbar-expand-md navbar-light bg-primary py-0 mb-0">
+    <h6>Logo</h6>
+    <!-- <h6 class="pb-1">Staff LoggedIn, <small class="text-warning mb-0">Welcome {{loggedInstaff.fName}}  {{loggedInstaff.lName}} ({{loggedInstaff.dept}})</small></h6> -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <button class="btn btn-sm text-warning ms-auto" (click)="logOut()"><small>LogOut</small></button>
+    </div>
+</nav>
+<div class="container mt-5">
+    <p class="bg-light mb-0"><small>Staff LoggedIn, </small><small class="text-warning">Welcome {{loggedInstaff.fName}}  {{loggedInstaff.lName}} ({{loggedInstaff.dept}})</small></p>
+    <div *ngIf="leaveList.length===0" class="container d-flex vh-100 justify-content-center">
+        <div class="my-auto text-center">
+            <h6>No Leave Applied Yet</h6>
+            <button type="button" class="btn btn-primary border mb-2" data-toggle="modal" data-target="#leaveModal"> Apply Leave </button>
+            <div class="mt-4 text-center mb-2">
+                <button type="button" class="btn btn-primary border border-dark px-4" routerLink="/login">Log Out</button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="leaveList.length>0" class="row mb-0">
+        <div class="row my-2">
+            <div class="col-6 col-sm-2 border border-light border-shadow-sm text-center p-0 p-lg-2">
+                <h4 class="text-primary">20</h4>
+                <p><small>Total Leaves</small></p>
+            </div>
+            <div class="col-6 col-sm-2 border border-light border-shadow-sm text-center p-0 p-lg-2 offset-sm-1">
+                <h4 class="text-warning">{{20 - approvedLeavesQty}}</h4>
+                <p><small>Balance Leaves</small></p>
+            </div>
+            <div class="col-6 col-sm-2 border border-light border-shadow-sm text-center p-0 p-lg-2">
+                <h4 class="text-success">{{approvedLeavesQty}}</h4>
+                <p><small>Leaves Approved</small></p>
+            </div>
+            <div class="col-6 col-sm-2 border border-light border-shadow-sm text-center p-0 p-lg-2">
+                <h4 class="text-danger">{{rejectedLeavesQty}}</h4>
+                <p><small>Leaves Rejected</small></p>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4" *ngFor="let leave of leaveList">
+            <div class="card my-2">
+                <div class="card-body leaveReq px-md-2">
+                    <h6 class="card-title text-primary"><small>Name: {{leave.stafffName}}  {{leave.stafflName}}</small></h6>
+                    <h6 class="card-subtitle mb-0"><small>Leave:</small></h6>
+                    <p class="card-text mb-0"><small>From: {{leave.startDate}} To: {{leave.endDate}}</small></p>
+                    <p class="text-secondary"><small>No. Of Days: {{leave.leaveDays}}</small></p>
+                    <h6 class="card-subtitle"><small>Reason:</small></h6>
+                    <p class="card-text text-primary">{{leave.reason}}</p>
+                    <div *ngIf="leave.leaveStatus=== 'Pending'" class="row text-center text-md-start">
+                        <div class="col-12 px-sm-1 px-md-2">
+                            <p class="card-text mb-0 d-inline"><small>Status:</small></p>
+                            <h6 class="text-warning font-weight-bold border border-secondary border-light d-inline">{{leave.leaveStatus}}</h6>
+                        </div>
+                    </div>
+                    <div *ngIf="leave.leaveStatus=== 'Approved'" class="row text-center text-md-start">
+                        <div class="col-12 px-sm-1 px-md-2">
+                            <p class="card-text mb-0 d-inline"><small>Status:</small></p>
+                            <h6 class="text-success font-weight-bold border border-secondary border-light  d-inline">&check; {{leave.leaveStatus}}</h6>
+                        </div>
+                    </div>
+                    <div *ngIf="leave.leaveStatus=== 'Rejected'" class="row text-center text-md-start">
+                        <div class="col-12 px-sm-1 px-md-2">
+                            <p class="card-text mb-0 d-inline"><small>Status:</small></p>
+                            <h6 class="text-danger font-weight-bold border border-secondary border-light  d-inline">&#10005; {{leave.leaveStatus}}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#leaveModal"> Apply New Leave </button>
+        </div>
+        <div class="mt-2 text-center">
+            <button type="button" class="btn btn-primary border border-dark px-4" (click)="logOut()">Log Out</button>
+        </div>
+    </div>
+    <div class="modal fade" id="leaveModal" tabindex="-1" role="dialog" aria-labelledby="leaveModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="leaveModalLabel">Apply For Leave</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+                        <div class="row form-group mb-2">
+                            <div class="row my-2 text-primary">
+                                <h6 class="card-title">Name: {{stafffName}}  {{stafflName}}</h6>
+                                <h6 class="card-text mb-0">leaves:</h6>
+                                <div class="col-sm-6">
+                                    <label for="start">Select Start Date:</label>
+                                    <input type="date" id="start" class="form-control" formControlName="startDate" (change)="totalLeaveDays()" required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="end">Select End Date:</label>
+                                    <input type="date" id="end" class="form-control" formControlName="endDate" (change)="totalLeaveDays()" required>
+                                </div>
+                            </div>
+                            <div *ngIf="startDate.valid && endDate.valid" class="text-primary">
+                                <p>From: {{startDate}} To: {{endDate}}</p>
+                            </div>
+                            <h6 class="text-warning">No. Of Days: {{leaveDays}}</h6>
+                            <!-- <h6 class="text-warning">No. Of Days: {{leaveDays}}</h6> -->
+                            <div class="my-3">
+                                <h6>Enter Reason:</h6>
+                                <input type="textarea" class="card-text form-input form-control-sm form-control" formControlName="reason" required>
+                            </div>
+                            <div class="col-sm-6 d-none">
+                                <label for="end">leaveStatus:</label>
+                                <input type="text" class="form-control" formControlName="leaveStatus">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary border border-dark" [disabled]="!myForm.valid">Apply</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
