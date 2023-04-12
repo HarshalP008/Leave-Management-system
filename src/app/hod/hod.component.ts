@@ -22,19 +22,18 @@ ngOnInit(): void {
  }
   approveBtn(leaveObj:any){
     leaveObj.leaveStatus="Approved";
-    this.leaveServ.editLeave(leaveObj.id,leaveObj.leaveStatus)
-    console.log(leaveObj.leaveStatus, leaveObj.id,leaveObj)
+    this.leaveServ.editLeave(leaveObj.leaveId,leaveObj.leaveStatus)
+    console.log(leaveObj.leaveStatus, leaveObj.leaveId,leaveObj)
   }
   rejBtn(leaveObj:any){
     leaveObj.leaveStatus="Rejected";
-    this.leaveServ.editLeave(leaveObj.id,leaveObj.leaveStatus)
-    console.log(leaveObj.leaveStatus, leaveObj.id,leaveObj)
+    this.leaveServ.editLeave(leaveObj.leaveId,leaveObj.leaveStatus)
+    console.log(leaveObj.leaveStatus, leaveObj.leaveId,leaveObj)
   }
   loggedInEmp(){
     this.loggedInHod = JSON.parse(localStorage.getItem('loggedInEmp') || '{}');
   }  
-  getLeaveList(){  
-    let loggedinUser = localStorage.getItem('loggedInUser'); 
+  getLeaveList(){    
     this.leaveServ.getLeaveData().pipe(takeUntil(this.unsubscribe$)).subscribe((leaves : any)=>{
       this.leavesList= leaves.filter((ele:any) =>  ele.staffDept === localStorage.getItem('dept'))
     })    
