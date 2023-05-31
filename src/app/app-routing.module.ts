@@ -8,7 +8,7 @@ import { StaffComponent } from './staff/staff.component';
 
 const routes: Routes = [
   {path: 'hod',component:HodComponent}, /* canActivate:[HodAuthGuard] */
-  {path:'staff', component:StaffComponent},
+  {path:'staff', component:StaffComponent}, /* canActivate*/
   {path: 'login', component:LoginComponent},
   {path: 'register', component:RegisterComponent },
   {path: 'pageNotFound', component: PageNotFoundComponent},
