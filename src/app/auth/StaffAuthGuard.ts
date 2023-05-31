@@ -9,16 +9,30 @@ export class StaffAuthGuard implements CanActivate {
     
   
     canActivate(next: ActivatedRouteSnapshot,state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {      
-      // const role = localStorage.getItem('role');
-      if (this.authServ.isStaff){
+      if (this.authServ.isHod){
+        this.router.navigate(['hod'])
         return true;
       } else {
         this.router.navigate(['login']);
         alert('You are not authorised to view this page')
         return false;
       }
-      // if(role=='HOD'){
-      //   return true;
-      // }
     }
+
+
+
+    // canActivate(next: ActivatedRouteSnapshot,state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {      
+    //   const userRole = this.authServ.userRole;
+      
+    //   if (userRole == 'Staff'){
+    //     this.router.navigate(['staff']);
+    //     return true;
+    //   } 
+    //   else {
+    //     this.router.navigate(['login']);
+    //     alert('You are not authorised to view this page')
+    //     return false;
+    //   }
+    // }
+
   }

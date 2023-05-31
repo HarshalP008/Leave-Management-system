@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ApiServiceService } from '../Shared/api-service.service';
 import { LeavesDataService } from '../Shared/leaves-data.service';
+import { AuthService } from '../Shared/auth.service';
 
 @Component({
   selector: 'app-hod',
@@ -14,11 +15,14 @@ export class HodComponent implements OnInit {
 leavesList : any[]=[];
 unsubscribe$= new Subject<void>();
 loggedInHod !: any;
-constructor(private leaveServ: LeavesDataService, private apiServe: ApiServiceService, private router: Router){}
+constructor(private leaveServ: LeavesDataService, private apiServe: ApiServiceService, private router: Router, private authServ: AuthService){
+  
+}
 
 ngOnInit(): void {
-  this.getLeaveList();
   this.loggedInEmp();
+  this.getLeaveList();
+  console.log( this.loggedInHod.fName, this.loggedInHod.lName)
  }
   approveBtn(leaveObj:any){
     leaveObj.leaveStatus="Approved";
@@ -31,16 +35,16 @@ ngOnInit(): void {
     console.log(leaveObj.leaveStatus, leaveObj.leaveId,leaveObj)
   }
   loggedInEmp(){
-    this.loggedInHod = JSON.parse(localStorage.getItem('loggedInEmp') || '{}');
-  }  
+    this.loggedInHod = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+  }
   getLeaveList(){    
     this.leaveServ.getLeaveData().pipe(takeUntil(this.unsubscribe$)).subscribe((leaves : any)=>{
-      this.leavesList= leaves.filter((ele:any) =>  ele.staffDept === localStorage.getItem('dept'))
+      this.leavesList= leaves.filter((ele:any) =>  ele.staffDept === this.loggedInHod.dept)
     })    
   }
   logOut(){
     localStorage.clear();
-    localStorage.removeItem('id');
+    // localStorage.removeItem('loggedInEmp');
     this.router.navigate(['login'])
   }
   ngOnDestroy(): void {

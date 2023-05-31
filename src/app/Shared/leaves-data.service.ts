@@ -31,8 +31,7 @@ export class LeavesDataService{
   }
   editLeave(id:any, leaveStatus:any){
   return this.http.patch("https://employeelist-abc72-default-rtdb.asia-southeast1.firebasedatabase.app/leaves/" + id + ".json",{leaveStatus})
-    .subscribe(
-        (val) => {
+    .subscribe((val) => {
             console.log("PATCH call successful LeaveStatus updated",val);
         })
       }

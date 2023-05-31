@@ -14,9 +14,9 @@ export class StaffComponent implements OnInit {
   unsubscribe$= new Subject<void>();
   leaveList:any[]=[];
   leave:any;
-  staffId !:string;
-  staffrole!: string;
-  staffDept !: string;
+  // staffId !:string;
+  // staffrole!: string;
+  // staffDept !: string;
   loggedInstaff !: any;
   stafffName !: any;
   stafflName !: any;
@@ -26,7 +26,7 @@ export class StaffComponent implements OnInit {
   balancedLeaves !: number;  
   startDate!: any;
   endDate !: any;
-  leaveDays!: number;
+  leaveDays!: any;
   
   constructor(private fb: FormBuilder, private leaveServ: LeavesDataService, private router: Router){
    }
@@ -35,11 +35,11 @@ export class StaffComponent implements OnInit {
    this.myForm = this.fb.group({
       // staffId: this.authServ.getItem('id'),
       // staffName: this.loggedInstaff.fName,
-      staffId: localStorage.getItem('id'),
-      stafffName: localStorage.getItem('fName'),
-      stafflName:localStorage.getItem('lName'),
-      staffrole: localStorage.getItem('role'),
-      staffDept: localStorage.getItem('dept'),
+      // staffId: localStorage.getItem('id'),
+      // stafffName: localStorage.getItem('fName'),
+      // stafflName:localStorage.getItem('lName'),
+      // staffrole: localStorage.getItem('role'),
+      // staffDept: localStorage.getItem('dept'),
       startDate: this.fb.control('',[Validators.required]),
       endDate: this.fb.control('',[Validators.required]),
       reason: this.fb.control('',[Validators.required]),
@@ -52,7 +52,8 @@ export class StaffComponent implements OnInit {
     this.lastName();
     this.startDate1();
     this.endDate1()
-    // console.log( this.loggedInstaff.fName, this.loggedInstaff.lName);
+    
+    console.log( this.loggedInstaff.fName, this.loggedInstaff.lName);
   }
   onSubmit() {
     console.log(this.myForm.value);
@@ -65,22 +66,28 @@ export class StaffComponent implements OnInit {
    }
   getLeaveList(){
     this.leaveServ.getLeaveData().pipe(takeUntil(this.unsubscribe$)).subscribe((res:any)=>{
-        console.log(res);        
-        this.leaveList= res.filter((ele:any)=>ele.staffId == localStorage.getItem('id'));
+      console.log(res);
+      this.leaveList= res.filter((ele:any)=>ele.staffId == this.loggedInstaff.id);
         let approvedLeaveList:any[]=this.leaveList.filter((ele:any)=>ele.leaveStatus == "Approved");
         this.approvedLeavesQty= approvedLeaveList.length;
         let rejectedLeaveList:any[]=this.leaveList.filter((ele:any)=>ele.leaveStatus == 'Rejected');
         this.rejectedLeavesQty= rejectedLeaveList.length;
       })
   }
+  
+  loggedInEmp(){
+    this.loggedInstaff = JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+  }
   getBalanceLeaves(){
     this.balancedLeaves= this.totalLeaves - this.approvedLeavesQty;
   }
   firstName(){
-    return this.stafffName = localStorage.getItem('fName');
+    // return this.stafffName = localStorage.getItem('fName'); or
+    return this.stafflName = this.loggedInstaff.fName;
   }
   lastName(){
-    return this.stafflName = localStorage.getItem('lName');
+    // return this.stafflName = localStorage.getItem('lName'); or
+    return this.stafflName = this.loggedInstaff.lName;
   }
   startDate1() {
     this.startDate= this.myForm.get('startDate').value;
@@ -101,13 +108,9 @@ export class StaffComponent implements OnInit {
   formClose() {
     this.myForm.reset();
   }
-  loggedInEmp(){
-    this.loggedInstaff = JSON.parse(localStorage.getItem('loggedInEmp') || '{}');
-  }
   logOut(){
     localStorage.clear();
-    localStorage.removeItem('id');
-    // location.reload();
+    // localStorage.removeItem('loggedInEmp');
     this.router.navigate(['login']);
   }
   ngOnDestroy(): void {

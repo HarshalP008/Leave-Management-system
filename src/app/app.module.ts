@@ -15,6 +15,8 @@ import { ApiServiceService } from './Shared/api-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HodAuthGuard } from './auth/HodAuthGuard';
 import { StaffAuthGuard } from './auth/StaffAuthGuard';
+import { AuthService } from './Shared/auth.service';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -32,9 +34,10 @@ import { StaffAuthGuard } from './auth/StaffAuthGuard';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
-  providers: [LeavesDataService, ApiServiceService,HodAuthGuard,StaffAuthGuard],
+  providers: [LeavesDataService, ApiServiceService,HodAuthGuard,StaffAuthGuard,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

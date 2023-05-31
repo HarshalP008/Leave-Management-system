@@ -12,12 +12,7 @@ export class AuthService {
     this.isStaffLoggedIn();
     this.isLoggedInUser();
   }
-  
-  // get currentUser() {//   
-  //   return JSON.parse(localStorage.getItem('id'));
-  // }  
-  
-    isLoggedInUser(){
+  isLoggedInUser(){
     return this.isLoggedIn = !!(localStorage.getItem('id'));
   }
   isHodLoggedIn() {
@@ -26,10 +21,18 @@ export class AuthService {
   isStaffLoggedIn(){
     return this.isStaff = !!(localStorage.getItem('role') === 'Staff')
   }
-  // logout() {
-  //   localStorage.clear();
-  //   this.isHod= false;
-  //   this.isStaff=false;
-  //   this.isLoggedIn= false;
+
+   // loggedInUser:any= JSON.parse(localStorage.getItem('loggedInUser') || '{}');
+  // userRole: any = (localStorage.getItem('role') || '{}');
+  // isLoggedIn !: boolean;
+  
+  // isUserLoggedIn(){
+  //   if(localStorage.getItem('loggedInUser')){
+  //     this.isLoggedIn = true;
+  //   }else{
+  //     this.isLoggedIn = false;
+  //   }
   // }
+// }
 }
+
